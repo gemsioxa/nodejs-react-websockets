@@ -1,0 +1,30 @@
+.main-page {
+    width: 100vw;
+    height: 100%;
+    /* background-color: red; */
+}
+
+.main-page__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100vw;
+    height: 65px;
+    background-color: rgb(144, 87, 179);
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
+}
+
+.main-page__header-title {
+    font-size: 24px;
+    font-weight: 600;
+    color: white;
+    margin-left: 16px;
+}
+
+.main-page__content {
+    display: flex;
+    width: 100vw;
+    height: calc(100vh - 65px);
+}
+

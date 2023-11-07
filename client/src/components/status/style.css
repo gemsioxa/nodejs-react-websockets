@@ -1,0 +1,28 @@
+.status {
+    display: flex;
+    gap: 8px;
+    align-items: baseline;
+    margin-right: 16px;
+}
+
+.status__title {
+    font-size: 24px;
+    font-weight: 600;
+    color: white;
+}
+
+.status__info {
+    font-size: 14px;
+    font-weight: 700;
+    color: white;
+    padding: 2px 4px;
+    border-radius: 4px;
+}
+
+.status__info-active {
+    background-color: green;
+}
+
+.status__info-inactive {
+    background-color: red;
+}
