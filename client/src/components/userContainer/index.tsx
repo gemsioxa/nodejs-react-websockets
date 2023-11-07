@@ -16,6 +16,7 @@ const UserContainer = ({ user }: IProps) => {
         }
 
         wsSendCommand(command)
+        setCommand('');
         e.preventDefault();
     }
 
@@ -29,6 +30,7 @@ const UserContainer = ({ user }: IProps) => {
             <form className={'input-container__form'} onSubmit={handleSubmit}>
                 <input 
                     onChange={(e) => setCommand(e.currentTarget.value)}
+                    value={command}
                     type={'text'} 
                     className={'user-container__form-input'}
                 />
