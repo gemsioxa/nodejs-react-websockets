@@ -15,13 +15,16 @@ const MainPage = () => {
     const [isActive, setIsActive] = useState<boolean>(false);
     const [isAuth, setIsAuth] = useState<boolean>(false);
     const [data, setData] = useState<IMessageData | null>(null);
+    const [messages, setMessages] = useState<Array<{ author: string, message: string }>>([]);
 
     useEffect(() => {
         ws.addEventListener('message', (e) => {
+            console.log('message');
             const data = JSON.parse(e.data);
             switch (data.action) {
                 case 'AUTH':
                     setData(data.message);
+                    setMessages(data.messages);
                     setIsAuth(true);
                     setIsActive(true);
                     break;
@@ -35,6 +38,9 @@ const MainPage = () => {
                 case 'COMMAND':
                     console.log(data.message.command);
                     break;
+                case 'CHAT':
+                    setMessages(data.messages);
+                    break;
                 default:
                     console.log(e.data);
                     break;
@@ -46,6 +52,7 @@ const MainPage = () => {
             setIsAuth(false);
             setData(null);
             setIsActive(false);
+            setMessages([]);
         });
     }, []);
 
@@ -61,7 +68,7 @@ const MainPage = () => {
             </div>
             <div className={'main-page__content'}>
                 {isAuth && data ? (
-                    <UserContainer user={data}/>
+                    <UserContainer user={data} messages={messages} />
                 ) : (
                     <>
                         <InputContainer />

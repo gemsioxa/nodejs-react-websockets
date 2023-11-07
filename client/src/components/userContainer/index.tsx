@@ -1,20 +1,31 @@
-import React, { FormEvent, useState } from 'react';
+import React, { FormEvent, useEffect, useState } from 'react';
 import { IMessageData } from '../../pages/mainPage';
 import './style.css';
-import { wsSendCommand } from '../../utils/websocket-connection';
+import { wsSendChat, wsSendCommand } from '../../utils/websocket-connection';
 
 interface IProps {
-    user: IMessageData
+    user: IMessageData,
+    messages?: Array<{ author: string, message: string }>
 }
 
-const UserContainer = ({ user }: IProps) => {
+const UserContainer = ({ user, messages }: IProps) => {
     const [command, setCommand] = useState('');
+
+    useEffect(() => {
+        console.log(messages);
+    }, [messages]);
 
     const handleSubmit = (e: FormEvent) => {
         if (!command) {
             return;
         }
 
+        const data = {
+            author: user.name,
+            message: command
+        }
+    
+        wsSendChat(data);
         wsSendCommand(command)
         setCommand('');
         e.preventDefault();
@@ -36,6 +47,15 @@ const UserContainer = ({ user }: IProps) => {
                 />
                 <button type={'submit'} className={'input-container__form-button'}>Send</button>
             </form>
+
+            <div style={{display: 'flex', flexDirection: 'column'}}>
+                {messages && messages.map((message, index) => (
+                    <div key={index} className={'user-container__message'}>
+                        <p>Author: {message.author}</p>
+                        <p>Message: {message.message}</p>
+                    </div>
+                ))}
+            </div>
         </div>
     );
 };
