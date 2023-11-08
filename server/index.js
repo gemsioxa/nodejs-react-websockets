@@ -12,6 +12,13 @@ wss.on('listening', () => {
 })
 wss.on('connection', onConnect);
 
+wss.broadcast = function(data, sender) {
+  wss.clients.forEach(function each(client) {
+    if (client !== sender) {
+      client.send(data);
+    }
+  });
+}
 function onConnect(ws) {
   console.log('Client connected');
   const connectReply = {
@@ -107,5 +114,7 @@ function onChat(ws, message) {
   }
   messages.push(newMessage);
 
+  wss.broadcast(JSON.stringify({"action": "CHAT", "messages": messages}), ws);
   ws.send(JSON.stringify({"action": "CHAT", "messages": messages}));
+
 }

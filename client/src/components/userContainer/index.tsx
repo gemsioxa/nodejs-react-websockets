@@ -5,7 +5,7 @@ import { wsSendChat, wsSendCommand } from '../../utils/websocket-connection';
 
 interface IProps {
     user: IMessageData,
-    messages?: Array<{ author: string, message: string }>
+    messages: Array<{ author: string, message: string }>
 }
 
 const UserContainer = ({ user, messages }: IProps) => {
@@ -48,13 +48,19 @@ const UserContainer = ({ user, messages }: IProps) => {
                 <button type={'submit'} className={'input-container__form-button'}>Send</button>
             </form>
 
-            <div style={{display: 'flex', flexDirection: 'column'}}>
-                {messages && messages.map((message, index) => (
-                    <div key={index} className={'user-container__message'}>
-                        <p>Author: {message.author}</p>
-                        <p>Message: {message.message}</p>
+            <div className={'user-container__chat'}>
+                {messages.length ? 
+                    messages.map((message, index) => (
+                        <div key={index} className={'user-container__chat__message'}>
+                            <p>Author: {message.author}</p>
+                            <p>Message: {message.message}</p>
+                        </div>
+                    ))
+                : (
+                    <div className={'user-container__chat__message'}>
+                        <p>No messages</p>
                     </div>
-                ))}
+                )}
             </div>
         </div>
     );

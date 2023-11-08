@@ -19,7 +19,6 @@ const MainPage = () => {
 
     useEffect(() => {
         ws.addEventListener('message', (e) => {
-            console.log('message');
             const data = JSON.parse(e.data);
             switch (data.action) {
                 case 'AUTH':
