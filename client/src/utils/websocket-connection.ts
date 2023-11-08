@@ -25,3 +25,11 @@ export function wsSendCommand(command: string) {
     }
     ws.send(JSON.stringify({action: 'COMMAND', data: JSON.stringify(data)}));
 }
+
+export function wsSendChat(payload: { author: string, message: string }) {
+    const data = {
+        author: payload.author,
+        message: payload.message
+    }
+    ws.send(JSON.stringify({action: 'CHAT', data: JSON.stringify(data)}));
+}

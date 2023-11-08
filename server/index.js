@@ -5,11 +5,20 @@ const config = require('./config.json');
 const name = config.hashName;
 const password = config.hashPassword;
 
+const messages = [];
+
 wss.on('listening', () => {
     console.log(`Server listening on port: ${wss.address().port}`);
 })
 wss.on('connection', onConnect);
 
+wss.broadcast = function(data, sender) {
+  wss.clients.forEach(function each(client) {
+    if (client !== sender) {
+      client.send(data);
+    }
+  });
+}
 function onConnect(ws) {
   console.log('Client connected');
   const connectReply = {
@@ -41,6 +50,9 @@ function onConnect(ws) {
           case 'COMMAND':
             onCommand(ws, JSON.parse(jsonMessage.data));
             break;
+          case 'CHAT': 
+            onChat(ws, JSON.parse(jsonMessage.data));
+            break;
           default:
             console.log('Unknown message type');
             break;
@@ -62,7 +74,8 @@ function onAuth(ws, message) {
     console.log('Authenticated');
     const reply = {
       "action": 'AUTH',
-      "message": message
+      "message": message,
+      "messages": messages
     }
     ws.send(JSON.stringify(reply));
     ws.send(JSON.stringify({"action": "INFO", "message": {"description": "Authenticated!"}}));
@@ -92,4 +105,16 @@ function onCommand(ws, message) {
   }
 
   ws.send(JSON.stringify(reply));
+}
+
+function onChat(ws, message) {
+  const newMessage = {
+    "author": message.author,
+    "message": message.message
+  }
+  messages.push(newMessage);
+
+  wss.broadcast(JSON.stringify({"action": "CHAT", "messages": messages}), ws);
+  ws.send(JSON.stringify({"action": "CHAT", "messages": messages}));
+
 }

@@ -37,3 +37,19 @@
     border: none;
     cursor: pointer;
 }
+
+.user-container__chat {
+    padding: 8px;
+    margin: 12px 0;
+    display: flex;
+    gap: 8px;
+    flex-direction: column;
+    overflow-y: auto;
+    height: 220px;
+}
+
+.user-container__chat__message {
+    padding: 12px 20px;
+    border-radius: 16px;
+    box-shadow: 0 0 1px 0 rgba(0, 0 , 0, 0.5);
+}
